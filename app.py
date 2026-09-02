@@ -1,40 +1,57 @@
-from flask import Flask, jsonify, render_template, abort
-import copy
-
+from flask import Flask, jsonify, request
+# Crear la aplicación 
 app = Flask(__name__)
-
-CARROS_INICIALES = [
-    {"id": 1, "marca": "Toyota", "modelo": "Corolla", "anio": 2020, "kilometraje": 45000, "transmision": "Automática", "color": "Gris", "precio": 14500},
-    {"id": 2, "marca": "Mazda", "modelo": "3", "anio": 2019, "kilometraje": 62000, "transmision": "Manual", "color": "Rojo", "precio": 11800},
-    {"id": 3, "marca": "Honda", "modelo": "Civic", "anio": 2021, "kilometraje": 30000, "transmision": "Automática", "color": "Negro", "precio": 17200}
-]
-
-carros = copy.deepcopy(CARROS_INICIALES)
+# # Base de datos simulada (en memoria)
+productos = [ {"id": 1, "nombre": "Laptop", "precio": 1200}, {"id": 2, "nombre": "Mouse", "precio": 25}, {"id": 3, "nombre": "Teclado", "precio": 75}]
+# Ruta principal
 
 @app.route('/')
-def inicio():
-    return render_template('index.html')
+def inicio(): 
+    return jsonify({"mensaje": "Bienvenido a la API de Productos"})
+# GET: Obtener todos los productos
 
-@app.route('/api/carros', methods=['GET'])
-def obtener_carros():
-    return jsonify(carros), 200
+@app.route('/api/productos', methods=['GET'])
+def obtener_productos(): 
+    return jsonify(productos), 200
 
-@app.route('/api/carros/<int:carro_id>/comprar', methods=['POST'])
-def comprar_carro(carro_id):
-    global carros
-    carro = next((c for c in carros if c["id"] == carro_id), None)
+# GET: Obtener un producto por ID
+@app.route('/api/productos/<int:id>', methods=['GET'])
+def obtener_producto(id):
+    producto = next((p for p in productos if p['id'] == id), None) 
+    if producto: 
+        return jsonify(producto), 200 
+    return jsonify({"error": "Producto no encontrado"}), 201
 
-    if carro is None:
-        abort(404, description="Carro no encontrado")
+# PUT: MODIFICAR   
+@app.route('/api/productos/<int:id>', methods=['PUT'])
+def update_producto(id):
+    producto = next((p for p in productos if p['id'] == id), None) 
+    if producto: 
+        data = request.get_json()
+        producto.update(data)
+        return jsonify(producto)
+    else:
+        return jsonify({"error": "Producto no encontrado"}), 404
+    
+# POST: CREAR PRODUCTOS 
+@app.route('/api/productos', methods=['POST'])
+def add_producto(): 
+    if not request.is_json: 
+        return jsonify({"error": "Solicitud debe ser JSON"}), 400 
+    else:
+        nuevo_producto = request.get_json()
+        productos.append(nuevo_producto)
+        return jsonify(nuevo_producto),201
 
-    carros = [c for c in carros if c["id"] != carro_id]
-    return jsonify({"mensaje": "Compra exitosa", "carro": carro}), 200
-
-@app.route('/api/carros/reiniciar', methods=['POST'])
-def reiniciar_inventario():
-    global carros
-    carros = copy.deepcopy(CARROS_INICIALES)
-    return jsonify(carros), 200
-
-if __name__ == '__main__':
-    app.run(debug=True)
+#DELETE: ELIMINAR
+@app.route('/api/productos/<int:id>', methods=['DELETE'])
+def eliminar_producto(id): 
+    global productos 
+    producto = next((p for p in productos if p['id'] == id), None) 
+    if not producto: 
+        return jsonify({"error": "Producto no encontrado"}), 404 
+    productos = [p for p in productos if p['id'] != id] 
+    return jsonify({"mensaje": "Producto eliminado"}), 200
+# Ejecutar la aplicación
+if __name__ == '__main__': 
+    app.run(debug=True, port=5000)
