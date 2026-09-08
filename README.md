@@ -43,18 +43,8 @@ python -m venv .env
 
 **En Windows (PowerShell):**
 ```bash
-.\.env\Scripts\Activate.ps1
+.env\Scripts\activate
 ```
-
-**En Mac/Linux:**
-```bash
-source .env/bin/activate
-```
-
-Sabrás que el entorno está activo porque la terminal mostrará `(.env)` al inicio de la línea.
-
-> ⚠️ Si PowerShell muestra un error de permisos, ejecuta primero:
-> `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 
 ### 6. Instalar las dependencias
 
