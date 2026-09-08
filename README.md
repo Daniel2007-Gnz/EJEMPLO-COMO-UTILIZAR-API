@@ -47,7 +47,19 @@ Si VS Code no abrió automáticamente la carpeta del proyecto, puedes abrirla co
 code .
 ```
 
-### 5. Crear el entorno virtual
+> Ten en cuenta que `code .` abre la carpeta del proyecto en VS Code, pero **no abre la terminal automáticamente**. Sigue con el siguiente paso para volver a abrirla.
+
+### 5. Volver a abrir la terminal en el proyecto
+
+Como `code .` no abre la terminal por sí solo, ábrela de nuevo con el mismo atajo que en el paso 2:
+
+```
+Ctrl + Ñ
+```
+
+Ahora la terminal ya está ubicada dentro de la carpeta del proyecto (`EJEMPLO-COMO-UTILIZAR-API`), lista para los siguientes comandos.
+
+### 6. Crear el entorno virtual
 
 Dentro de la carpeta del proyecto, ejecuta:
 
@@ -57,7 +69,9 @@ python -m venv .env
 
 Esto creará una carpeta `.env` con un entorno de Python aislado para el proyecto.
 
-### 6. Activar el entorno virtual
+### 7. Activar el entorno virtual
+
+Si cerraste la terminal después de crear el entorno virtual, vuelve a abrirla con `Ctrl + Ñ` (como en el paso 2) antes de continuar.
 
 **En Windows (PowerShell):**
 
@@ -73,7 +87,7 @@ Si la activación fue correcta, verás `(.env)` al inicio de la línea de la ter
 > ```
 > y vuelve a intentarlo.
 
-### 7. Instalar las dependencias
+### 8. Instalar las dependencias
 
 Con el entorno virtual activado:
 
@@ -81,7 +95,7 @@ Con el entorno virtual activado:
 pip install -r requirements.txt
 ```
 
-### 8. Ejecutar el proyecto
+### 9. Ejecutar el proyecto
 
 ```
 python app.py
@@ -106,7 +120,7 @@ Copia esa URL (`http://127.0.0.1:5000`); la vas a usar en Postman en el siguient
 | PUT    | `/api/productos/<id>` | Modifica un producto existente            |
 | DELETE | `/api/productos/<id>` | Elimina un producto por su id             |
 
-## 9. Probar la API con Postman
+## 10. Probar la API con Postman
 
 Con el servidor Flask corriendo y la URL copiada, abre Postman y crea una petición para cada endpoint:
 
@@ -119,7 +133,7 @@ Con el servidor Flask corriendo y la URL copiada, abre Postman y crea una petici
 
 Puedes ir creando una pestaña nueva en Postman para cada uno de los siguientes casos:
 
-### 9.1. GET - Obtener todos los productos
+### 10.1. GET - Obtener todos los productos
 
 - Método: `GET`
 - URL: `http://127.0.0.1:5000/api/productos`
@@ -127,7 +141,7 @@ Puedes ir creando una pestaña nueva en Postman para cada uno de los siguientes 
 
 ![GET todos los productos](https://github.com/Daniel2007-Gnz/EJEMPLO-COMO-UTILIZAR-API/raw/main/01-get-productos.png)
 
-### 9.2. GET - Obtener un producto por id
+### 10.2. GET - Obtener un producto por id
 
 - Método: `GET`
 - URL: `http://127.0.0.1:5000/api/productos/1`
@@ -135,7 +149,7 @@ Puedes ir creando una pestaña nueva en Postman para cada uno de los siguientes 
 
 ![GET un producto](https://github.com/Daniel2007-Gnz/EJEMPLO-COMO-UTILIZAR-API/raw/main/02-get-producto-id.png)
 
-### 9.3. PUT - Modificar un producto
+### 10.3. PUT - Modificar un producto
 
 - Método: `PUT`
 - URL: `http://127.0.0.1:5000/api/productos/1`
@@ -150,7 +164,7 @@ Puedes ir creando una pestaña nueva en Postman para cada uno de los siguientes 
 
 ![PUT modificar producto](https://github.com/Daniel2007-Gnz/EJEMPLO-COMO-UTILIZAR-API/raw/main/03-put-modificar.png)
 
-### 9.4. POST - Crear un producto
+### 10.4. POST - Crear un producto
 
 - Método: `POST`
 - URL: `http://127.0.0.1:5000/api/productos`
@@ -167,7 +181,7 @@ La API responde con código `201 CREATED` y el producto creado, incluyendo su nu
 
 ![POST crear producto](https://github.com/Daniel2007-Gnz/EJEMPLO-COMO-UTILIZAR-API/raw/main/04-post-crear.png)
 
-### 9.5. DELETE - Eliminar un producto
+### 10.5. DELETE - Eliminar un producto
 
 - Método: `DELETE`
 - URL: `http://127.0.0.1:5000/api/productos/3`
@@ -187,4 +201,4 @@ La API responde confirmando la eliminación:
 
 - El servidor levanta por defecto en `http://127.0.0.1:5000`.
 - Para detener el servidor, en la terminal donde está corriendo presiona `Ctrl + C`.
-- Para volver a activar el entorno virtual en una nueva sesión (por ejemplo, si cerraste VS Code y lo vuelves a abrir), repite el paso 6 antes de ejecutar `python app.py`.
+- Para volver a activar el entorno virtual en una nueva sesión (por ejemplo, si cerraste VS Code y lo vuelves a abrir), abre la terminal con `Ctrl + Ñ` y repite el paso 7 antes de ejecutar `python app.py`.
