@@ -130,7 +130,7 @@ Método `DELETE` a `http://127.0.0.1:5000/api/productos/3`. La API responde conf
 }
 ```
 
-![DELETE eliminar producto](img/05-delete-borrar.png)
+![DELETE eliminar producto](05-delete-borrar.png)
 
 ## Notas
 
