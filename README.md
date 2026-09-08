@@ -122,38 +122,59 @@ Copia esa URL (`http://127.0.0.1:5000`); la vas a usar en Postman en el siguient
 
 ## 10. Probar la API con Postman
 
-Con el servidor Flask corriendo y la URL copiada, abre Postman y crea una petición para cada endpoint:
+Con el servidor Flask corriendo y la URL `http://127.0.0.1:5000` copiada, abre Postman.
 
-1. Abre Postman y crea una nueva pestaña de petición con el botón **+**.
-2. En el menú desplegable de la izquierda de la barra de dirección, selecciona el **método HTTP** (GET, POST, PUT o DELETE).
-3. En el campo de la URL, pega la dirección copiada y agrega la ruta del endpoint, por ejemplo `http://127.0.0.1:5000/api/productos`.
-4. Si el endpoint necesita datos (POST o PUT), ve a la pestaña **Body**, selecciona **raw** y elige el formato **JSON** en el menú desplegable de la derecha, y escribe el JSON con los datos a enviar.
-5. Haz clic en el botón azul **Send**.
-6. Revisa la respuesta en la parte inferior: el código de estado (200, 201, 404, etc.) y el cuerpo de la respuesta en formato JSON.
+### ¿Qué es el `id` y por qué a veces se usa `1`, a veces `3`, etc.?
 
-Puedes ir creando una pestaña nueva en Postman para cada uno de los siguientes casos:
+Cada producto que existe en la API tiene un número identificador único llamado `id` (por ejemplo, el producto 1, el producto 2, el producto 3...). Ese número es el que se usa en la URL cuando quieres trabajar con **un producto en particular** (para consultarlo, modificarlo o borrarlo).
+
+- En el endpoint `GET /api/productos` (sin id) pides **todos** los productos, así que no hace falta poner ningún número.
+- En los endpoints que sí llevan `<id>` en la URL (`GET /api/productos/<id>`, `PUT /api/productos/<id>`, `DELETE /api/productos/<id>`), `<id>` se reemplaza por el número del producto exacto que quieres consultar, modificar o eliminar.
+
+Por eso en los ejemplos de abajo se usa `1` para consultar y modificar (porque el producto con id `1` ya existe en los datos de ejemplo del proyecto) y `3` para eliminar (porque también existe un producto con id `3`). Si quieres trabajar con otro producto, cambia ese número por el `id` real que quieras usar. Para saber qué ids existen, primero puedes hacer la petición **GET - Obtener todos los productos** (punto 10.1) y revisar la lista.
+
+### Cómo crear cada petición en Postman, paso a paso
+
+Para **cada uno** de los 5 casos de abajo (10.1 a 10.5), repite exactamente estos pasos:
+
+1. En Postman, haz clic en el botón **+** para abrir una pestaña de petición nueva.
+2. Haz clic en el menú desplegable que dice `GET` (está a la izquierda de la barra de dirección) y selecciona el método indicado en el caso que estés siguiendo (`GET`, `POST`, `PUT` o `DELETE`).
+3. Haz clic en el campo de la barra de dirección (donde dice "Enter URL or paste text").
+4. **Copia y pega exactamente la URL** que se indica en ese caso, sin escribirla a mano y sin cambiar nada, salvo que se indique lo contrario.
+5. Si el caso indica un **Body**, haz clic en la pestaña **Body** (debajo de la barra de dirección), selecciona la opción **raw**, y en el menú desplegable que aparece a la derecha (por defecto dice "Text") selecciona **JSON**.
+6. **Copia y pega exactamente el JSON** que se muestra en ese caso dentro del cuadro de texto grande que aparece.
+7. Haz clic en el botón azul **Send**, a la derecha de la barra de dirección.
+8. Revisa la respuesta que aparece abajo: el código de estado (por ejemplo `200`, `201`, `404`) y el contenido en formato JSON.
+
+Puedes crear una pestaña nueva en Postman para cada uno de los siguientes 5 casos, siguiendo siempre los pasos de arriba.
 
 ### 10.1. GET - Obtener todos los productos
 
-- Método: `GET`
-- URL: `http://127.0.0.1:5000/api/productos`
-- Body: no necesita body.
+Este endpoint no necesita ningún `id` porque devuelve **todos** los productos de una vez.
+
+- Método a seleccionar en Postman: `GET`
+- URL a copiar y pegar: `http://127.0.0.1:5000/api/productos`
+- Body: no se necesita body, así que no hagas los pasos 5 y 6 de arriba.
 
 ![GET todos los productos](https://github.com/Daniel2007-Gnz/EJEMPLO-COMO-UTILIZAR-API/raw/main/01-get-productos.png)
 
 ### 10.2. GET - Obtener un producto por id
 
-- Método: `GET`
-- URL: `http://127.0.0.1:5000/api/productos/1`
-- Body: no necesita body.
+Este endpoint sí necesita un `id` en la URL, porque le estás pidiendo un producto específico y no toda la lista. En el ejemplo se usa `1` porque ese producto ya existe en los datos de prueba.
+
+- Método a seleccionar en Postman: `GET`
+- URL a copiar y pegar: `http://127.0.0.1:5000/api/productos/1`
+- Body: no se necesita body.
 
 ![GET un producto](https://github.com/Daniel2007-Gnz/EJEMPLO-COMO-UTILIZAR-API/raw/main/02-get-producto-id.png)
 
 ### 10.3. PUT - Modificar un producto
 
-- Método: `PUT`
-- URL: `http://127.0.0.1:5000/api/productos/1`
-- Body (raw JSON), con los campos a actualizar, por ejemplo:
+Este endpoint también necesita un `id` en la URL, porque le estás diciendo a la API **cuál** producto quieres cambiar. Se usa `1` porque es el mismo producto que consultaste en el paso anterior. El Body indica los datos nuevos que reemplazarán a los datos actuales de ese producto.
+
+- Método a seleccionar en Postman: `PUT`
+- URL a copiar y pegar: `http://127.0.0.1:5000/api/productos/1`
+- Body a copiar y pegar (raw JSON):
 
 ```
 {
@@ -166,9 +187,11 @@ Puedes ir creando una pestaña nueva en Postman para cada uno de los siguientes 
 
 ### 10.4. POST - Crear un producto
 
-- Método: `POST`
-- URL: `http://127.0.0.1:5000/api/productos`
-- Body (raw JSON), con el nuevo producto:
+Este endpoint **no** lleva `id` en la URL, porque todavía no existe el producto: es la API la que le asigna un `id` nuevo automáticamente cuando lo creas. El Body indica los datos del producto nuevo que quieres agregar.
+
+- Método a seleccionar en Postman: `POST`
+- URL a copiar y pegar: `http://127.0.0.1:5000/api/productos`
+- Body a copiar y pegar (raw JSON):
 
 ```
 {
@@ -177,15 +200,17 @@ Puedes ir creando una pestaña nueva en Postman para cada uno de los siguientes 
 }
 ```
 
-La API responde con código `201 CREATED` y el producto creado, incluyendo su nuevo `id`.
+La API responde con código `201 CREATED` y el producto creado, incluyendo su nuevo `id` (ese `id` es el que se generó automáticamente y podrías usar luego en un GET, PUT o DELETE).
 
 ![POST crear producto](https://github.com/Daniel2007-Gnz/EJEMPLO-COMO-UTILIZAR-API/raw/main/04-post-crear.png)
 
 ### 10.5. DELETE - Eliminar un producto
 
-- Método: `DELETE`
-- URL: `http://127.0.0.1:5000/api/productos/3`
-- Body: no necesita body.
+Este endpoint necesita un `id` en la URL, porque le estás diciendo a la API **cuál** producto eliminar de la lista. En el ejemplo se usa `3` porque ese producto ya existe en los datos de prueba (distinto al `1` de los casos anteriores, solo para mostrar que puede ser cualquier id existente).
+
+- Método a seleccionar en Postman: `DELETE`
+- URL a copiar y pegar: `http://127.0.0.1:5000/api/productos/3`
+- Body: no se necesita body.
 
 La API responde confirmando la eliminación:
 
