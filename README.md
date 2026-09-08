@@ -84,13 +84,13 @@ Con el servidor Flask corriendo, abre Postman y prueba cada endpoint:
 
 Método `GET` a `http://127.0.0.1:5000/api/productos`. Devuelve el listado completo en formato JSON.
 
-![GET todos los productos](img/01-get-productos.png)
+![GET todos los productos](01-get-productos.png)
 
 ### 2. GET - Obtener un producto por id
 
 Método `GET` a `http://127.0.0.1:5000/api/productos/1`. Devuelve únicamente el producto solicitado.
 
-![GET un producto](img/02-get-producto-id.png)
+![GET un producto](02-get-producto-id.png)
 
 ### 3. PUT - Modificar un producto
 
@@ -103,7 +103,7 @@ Método `PUT` a `http://127.0.0.1:5000/api/productos/1`, enviando en el **Body**
 }
 ```
 
-![PUT modificar producto](img/03-put-modificar.png)
+![PUT modificar producto](03-put-modificar.png)
 
 ### 4. POST - Crear un producto
 
@@ -118,7 +118,7 @@ Método `POST` a `http://127.0.0.1:5000/api/productos`, enviando en el **Body** 
 
 La API responde con código `201 CREATED` y el producto creado, incluyendo su nuevo `id`.
 
-![POST crear producto](img/04-post-crear.png)
+![POST crear producto](04-post-crear.png)
 
 ### 5. DELETE - Eliminar un producto
 
