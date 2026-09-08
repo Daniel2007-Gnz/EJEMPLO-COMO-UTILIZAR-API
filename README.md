@@ -43,19 +43,8 @@ python -m venv .env
 
 **En Windows (PowerShell):**
 ```bash
-.\.env\Scripts\Activate.ps1
+.env\Scripts\activate
 ```
-
-**En Mac/Linux:**
-```bash
-source .env/bin/activate
-```
-
-Sabrás que el entorno está activo porque la terminal mostrará `(.env)` al inicio de la línea.
-
-> ⚠️ Si PowerShell muestra un error de permisos, ejecuta primero:
-> `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
-
 ### 6. Instalar las dependencias
 
 Con el entorno virtual activado:
@@ -76,10 +65,6 @@ Si todo salió bien, verás un mensaje similar a este en la terminal:
 * Running on http://127.0.0.1:5000
 * Debugger is active!
 ```
-
-La API ya está corriendo y lista para recibir peticiones en `http://127.0.0.1:5000`.
-
-> 💡 Ejecuta siempre `python app.py` desde la terminal integrada de VS Code (con el entorno `.env` activado), no con el botón ▶️ "Run" de extensiones como Code Runner, ya que este puede usar un intérprete de Python distinto al del entorno virtual y arrojar el error `ModuleNotFoundError: No module named 'flask'`.
 
 ## Endpoints disponibles
 
@@ -150,5 +135,3 @@ Método `DELETE` a `http://127.0.0.1:5000/api/productos/3`. La API responde conf
 ## Notas
 
 - El servidor levanta por defecto en `http://127.0.0.1:5000`.
-- Recuerda reactivar el entorno virtual (`.env`) cada vez que abras una nueva terminal, antes de correr `python app.py`.
-- El archivo `.env` del proyecto puede contener variables de configuración sensibles; evita subirlo a un repositorio público sin revisar su contenido.
