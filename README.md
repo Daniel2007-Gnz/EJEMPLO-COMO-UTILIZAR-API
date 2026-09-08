@@ -99,56 +99,34 @@ Con el servidor Flask corriendo, abre Postman y prueba cada endpoint:
 
 Método `GET` a `http://127.0.0.1:5000/api/productos`. Devuelve el listado completo en formato JSON.
 
-![GET todos los productos](img/01-get-productos.png)
+![GET todos los productos](01-get-productos.png)
 
 ### 2. GET - Obtener un producto por id
 
 Método `GET` a `http://127.0.0.1:5000/api/productos/1`. Devuelve únicamente el producto solicitado.
 
-![GET un producto](img/02-get-producto-id.png)
+![GET un producto](02-get-producto-id.png)
 
 ### 3. PUT - Modificar un producto
 
 Método `PUT` a `http://127.0.0.1:5000/api/productos/1`, enviando en el **Body** (raw JSON) los campos a actualizar, por ejemplo:
 
-```json
-{
-  "nombre": "Asus",
-  "precio": 1200
-}
-```
-
-![PUT modificar producto](img/03-put-modificar.png)
+![PUT modificar producto](03-put-modificar.png)
 
 ### 4. POST - Crear un producto
 
 Método `POST` a `http://127.0.0.1:5000/api/productos`, enviando en el **Body** (raw JSON) el nuevo producto:
 
-```json
-{
-  "nombre": "mustang",
-  "precio": 1234
-}
-```
-
+![POST crear producto](04-post-crear.png)
 La API responde con código `201 CREATED` y el producto creado, incluyendo su nuevo `id`.
-
-![POST crear producto](img/04-post-crear.png)
 
 ### 5. DELETE - Eliminar un producto
 
 Método `DELETE` a `http://127.0.0.1:5000/api/productos/3`. La API responde confirmando la eliminación:
 
-```json
-{
-  "mensaje": "Producto eliminado"
-}
-```
 
-![DELETE eliminar producto](img/05-delete-borrar.png)
+![DELETE eliminar producto](05-delete-borrar.png)
 
 ## Notas
 
 - El servidor levanta por defecto en `http://127.0.0.1:5000`.
-- Recuerda reactivar el entorno virtual (`.env`) cada vez que abras una nueva terminal, antes de correr `python app.py`.
-- El archivo `.env` del proyecto puede contener variables de configuración sensibles; evita subirlo a un repositorio público sin revisar su contenido.
