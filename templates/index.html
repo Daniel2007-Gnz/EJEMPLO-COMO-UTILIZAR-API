@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de productos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #182029;
+    --ink-soft: #4b5563;
+    --paper: #E7ECEF;
+    --panel: #F5F7F6;
+    --line: #C7D0CC;
+    --amber: #D9A441;
+    --amber-dark: #B8842E;
+    --teal: #2F6F6F;
+    --brick: #B23A2E;
+    --brick-dark: #8F2C22;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; animation: none !important; }
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    min-height: 100vh;
+    padding: 48px 24px 96px;
+  }
+
+  .wrap{
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  h1{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .status{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .dot{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .dot.ok{ background: var(--teal); }
+  .dot.bad{ background: var(--brick); }
+
+  .subtitle{
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0 0 32px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 24px;
+  }
+
+  .toolbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .count{
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  button{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary{
+    background: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 2px;
+    transition: background 0.15s ease;
+  }
+  .btn-primary:hover{ background: var(--amber-dark); }
+  .btn-primary:focus-visible, button:focus-visible, input:focus-visible{
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+
+  /* Panel de alta / edición */
+  #panel{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: none;
+  }
+  #panel.open{ display: block; }
+
+  #panel h2{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    margin: 0 0 16px;
+  }
+
+  .field{
+    margin-bottom: 14px;
+  }
+
+  .field label{
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+
+  .field input{
+    width: 100%;
+    padding: 9px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .panel-actions{
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .btn-ghost{
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+  .btn-ghost:hover{ border-color: var(--ink-soft); color: var(--ink); }
+
+  /* Tabla / listado */
+  .ledger{
+    border-top: 1px solid var(--ink);
+  }
+
+  .row{
+    display: grid;
+    grid-template-columns: 48px 1fr 100px 130px;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row.head{
+    font-size: 11px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--ink);
+    padding-top: 0;
+  }
+
+  .row .id{ color: var(--ink-soft); }
+  .row .name{
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+  }
+  .row .price{
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row-actions{
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .icon-btn{
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-size: 13px;
+  }
+  .icon-btn:hover{ color: var(--teal); }
+  .icon-btn.danger:hover{ color: var(--brick); }
+
+  .empty{
+    padding: 48px 4px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+
+  .empty button{ margin-top: 12px; }
+
+  #toast{
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 20px;
+    border-radius: 2px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  #toast.show{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  #toast.error{ background: var(--brick-dark); }
+
+  @media (max-width: 520px){
+    .row{ grid-template-columns: 32px 1fr 74px; }
+    .row .price{ display: none; }
+    .row.head .price{ display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Registro de productos</h1>
+    <div class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Verificando conexión…</span>
+    </div>
+  </header>
+  <p class="subtitle">Catálogo servido por la API Flask en <code>/api/productos</code>.</p>
+
+  <div class="toolbar">
+    <span class="count" id="countText">—</span>
+    <button class="btn-primary" id="btnAdd" type="button">+ Agregar producto</button>
+  </div>
+
+  <div id="panel">
+    <h2 id="panelTitle">Nuevo producto</h2>
+    <input type="hidden" id="editId">
+    <div class="field">
+      <label for="fieldNombre">Nombre</label>
+      <input type="text" id="fieldNombre" placeholder="Ej: Monitor 24&quot;">
+    </div>
+    <div class="field">
+      <label for="fieldPrecio">Precio</label>
+      <input type="number" id="fieldPrecio" placeholder="0" min="0" step="0.01">
+    </div>
+    <div class="panel-actions">
+      <button class="btn-primary" id="btnSave" type="button">Guardar</button>
+      <button class="btn-ghost" id="btnCancel" type="button">Cancelar</button>
+    </div>
+  </div>
+
+  <div class="row head">
+    <span>Id</span>
+    <span>Nombre</span>
+    <span class="price">Precio</span>
+    <span></span>
+  </div>
+  <div class="ledger" id="tableBody"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = '/api/productos';
+
+const tableBody = document.getElementById('tableBody');
+const countText = document.getElementById('countText');
+const statusDot = document.getElementById('statusDot');
+const statusText = document.getElementById('statusText');
+const panel = document.getElementById('panel');
+const panelTitle = document.getElementById('panelTitle');
+const fieldNombre = document.getElementById('fieldNombre');
+const fieldPrecio = document.getElementById('fieldPrecio');
+const editId = document.getElementById('editId');
+
+document.getElementById('btnAdd').addEventListener('click', () => openPanel());
+document.getElementById('btnCancel').addEventListener('click', closePanel);
+document.getElementById('btnSave').addEventListener('click', saveProducto);
+
+function openPanel(producto){
+  if(producto){
+    panelTitle.textContent = 'Editar producto #' + producto.id;
+    editId.value = producto.id;
+    fieldNombre.value = producto.nombre;
+    fieldPrecio.value = producto.precio;
+  } else {
+    panelTitle.textContent = 'Nuevo producto';
+    editId.value = '';
+    fieldNombre.value = '';
+    fieldPrecio.value = '';
+  }
+  panel.classList.add('open');
+  fieldNombre.focus();
+}
+
+function closePanel(){
+  panel.classList.remove('open');
+}
+
+function showToast(msg, isError){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.toggle('error', !!isError);
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+function setStatus(ok){
+  statusDot.classList.toggle('ok', ok);
+  statusDot.classList.toggle('bad', !ok);
+  statusText.textContent = ok
+    ? 'Conectado a ' + API
+    : 'Sin conexión con el servidor Flask';
+}
+
+async function cargarProductos(){
+  try{
+    const res = await fetch(API);
+    if(!res.ok) throw new Error('status ' + res.status);
+    const productos = await res.json();
+    setStatus(true);
+    renderTabla(productos);
+  } catch(err){
+    setStatus(false);
+    renderTabla([]);
+    tableBody.innerHTML = '<div class="empty">No se pudo conectar con la API.<br>Verifica que <code>python app.py</code> siga corriendo en la terminal.</div>';
+  }
+}
+
+function renderTabla(productos){
+  countText.textContent = productos.length + (productos.length === 1 ? ' producto' : ' productos');
+
+  if(productos.length === 0){
+    tableBody.innerHTML = '<div class="empty">No hay productos todavía.<br><button class="btn-primary" onclick="document.getElementById(\'btnAdd\').click()">Agregar el primero</button></div>';
+    return;
+  }
+
+  tableBody.innerHTML = productos.map(p => `
+    <div class="row" data-id="${p.id}">
+      <span class="id">${String(p.id).padStart(2, '0')}</span>
+      <span class="name">${escapeHtml(p.nombre)}</span>
+      <span class="price">$${Number(p.precio).toLocaleString()}</span>
+      <span class="row-actions">
+        <button class="icon-btn" data-action="edit">Editar</button>
+        <button class="icon-btn danger" data-action="delete">Eliminar</button>
+      </span>
+    </div>
+  `).join('');
+
+  tableBody.querySelectorAll('.row').forEach(row => {
+    const id = Number(row.dataset.id);
+    row.querySelector('[data-action="edit"]').addEventListener('click', () => {
+      const nombre = row.querySelector('.name').textContent;
+      const precio = row.querySelector('.price').textContent.replace('$','').replace(/,/g,'');
+      openPanel({ id, nombre, precio });
+    });
+    row.querySelector('[data-action="delete"]').addEventListener('click', () => eliminarProducto(id, row));
+  });
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+async function saveProducto(){
+  const nombre = fieldNombre.value.trim();
+  const precio = parseFloat(fieldPrecio.value);
+
+  if(!nombre || isNaN(precio)){
+    showToast('Completa nombre y precio', true);
+    return;
+  }
+
+  const id = editId.value;
+  const body = { nombre, precio };
+
+  try{
+    let res;
+    if(id){
+      res = await fetch(`${API}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    } else {
+      res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    }
+    if(!res.ok) throw new Error('status ' + res.status);
+    showToast(id ? 'Producto actualizado' : 'Producto creado');
+    closePanel();
+    cargarProductos();
+  } catch(err){
+    showToast('Error al guardar el producto', true);
+  }
+}
+
+async function eliminarProducto(id, row){
+  if(!confirm('¿Eliminar este producto?')) return;
+  try{
+    const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+    if(!res.ok) throw new Error('status ' + res.status);
+    showToast('Producto eliminado');
+    cargarProductos();
+  } catch(err){
+    showToast('Error al eliminar el producto', true);
+  }
+}
+
+cargarProductos();
+</script>
+
+</body>
+</html>

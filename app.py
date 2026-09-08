@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request , render_template
 # Crear la aplicación 
 app = Flask(__name__)
 # # Base de datos simulada (en memoria)
@@ -7,7 +7,7 @@ productos = [ {"id": 1, "nombre": "Laptop", "precio": 1200}, {"id": 2, "nombre":
 
 @app.route('/')
 def inicio(): 
-    return jsonify({"mensaje": "Bienvenido a la API de Productos"})
+    return render_template('index.html')
 # GET: Obtener todos los productos
 
 @app.route('/api/productos', methods=['GET'])
